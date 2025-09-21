@@ -11,7 +11,6 @@ try:
 except ImportError:
     import dummy_threading as threading
 
-
 class MockRequest:
     """
     Mimic a urllib2.Request to get the correct cookie string for the request.
@@ -95,12 +94,10 @@ class MockResponse:
     def getheaders(self, name):
         self._headers.getheaders(name)
 
-
 class CookieConflictError(RuntimeError):
     """There are two cookies that meet the criteria specified in the cookie jar.
     Use .get and .set and include domain and path args in order to be more specific.
     """
-
 
 class RequestsCookieJar(CookieJar, MutableMapping):
     """ Origin: requests library (https://github.com/psf/requests)

@@ -66,3 +66,4 @@ class Client(Enum):
     OKHTTP4_ANDROID_11 = "okhttp4_android_11"
     OKHTTP4_ANDROID_12 = "okhttp4_android_12"
     OKHTTP4_ANDROID_13 = "okhttp4_android_13"
+    INSTAGRAM_IOS = "instagram_ios"

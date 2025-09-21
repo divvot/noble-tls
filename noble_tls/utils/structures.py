@@ -1,7 +1,6 @@
 from typing import MutableMapping, Mapping
 from collections import OrderedDict
 
-
 class CaseInsensitiveDict(MutableMapping):
     """Origin: requests library (https://github.com/psf/requests)
 

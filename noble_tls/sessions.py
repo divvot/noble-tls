@@ -15,7 +15,6 @@ from .response import build_response
 from .utils.session_utils import random_session_id
 from .utils.identifiers import Client
 
-
 class Session:
     def __init__(
             self,
@@ -34,10 +33,12 @@ class Session:
             priority_frames: Optional[list] = None,
             header_order: Optional[list] = None,  # Optional[list[str]]
             header_priority: Optional[dict] = None,  # Optional[list[str]]
-            random_tls_extension_order: Optional = False,
-            force_http1: Optional = False,
-            catch_panics: Optional = False,
-            debug: Optional = False,
+            random_tls_extension_order: Optional[bool] = False,
+            force_http1: Optional[bool] = False,
+            force_http3: Optional[bool] = False,
+            use_http3_after: Optional[bool] = False,
+            catch_panics: Optional[bool] = False,
+            debug: Optional[bool] = False,
             transportOptions: Optional[dict] = None,
             connectHeaders: Optional[dict] = None
     ) -> None:
@@ -258,6 +259,8 @@ class Session:
 
         # force HTTP1
         self.force_http1 = force_http1
+        self.force_http3 = force_http3
+        self.use_http3_after = use_http3_after
 
         self.transportOptions = transportOptions
 
@@ -376,6 +379,8 @@ class Session:
                 "sessionId": self._session_id,
                 "followRedirects": allow_redirects,
                 "forceHttp1": self.force_http1,
+                "forceHttp3": self.force_http3,
+                "useHttp3After": self.use_http3_after,
                 "withDebug": self.debug,
                 "catchPanics": self.catch_panics,
                 "headers": dict(headers),

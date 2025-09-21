@@ -5,7 +5,6 @@ from noble_tls.utils.structures import CaseInsensitiveDict
 from typing import Optional
 from requests.exceptions import HTTPError
 
-
 class Response:
     """Represents the response to an HTTP request."""
 

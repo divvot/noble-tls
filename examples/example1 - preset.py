@@ -18,13 +18,26 @@ from noble_tls import Client
 
 async def main():
     await noble_tls.update_if_necessary()
+
     session = noble_tls.Session(
-        client=Client.NIKE_IOS_MOBILE,
+        client=Client.INSTAGRAM_IOS,
+        use_http3_after=True,
         debug=True,
     )
 
     res = await session.get(
-        "https://bit.ly/3K5GY8J",
+        "https://i.instagram.com/actions",
+    )
+    print("Status code:", res.status_code)
+    print("Headers:", res.text)
+
+    for history in res.history:
+        print(f">> From URL: {history.url}")
+
+    print(f">> Current URL: {res.url}")
+
+    res = await session.get(
+        "https://i.instagram.com/actions",
     )
     print("Status code:", res.status_code)
     print("Headers:", res.text)

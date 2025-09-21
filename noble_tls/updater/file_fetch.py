@@ -1,19 +1,20 @@
 import asyncio
 import os
+import httpx
+
 from functools import wraps
 from typing import Tuple
 
+from noble_tls.exceptions.exceptions import TLSClientException
 from noble_tls.utils.asset import generate_asset_name
 from noble_tls.utils.asset import root_dir
-from noble_tls.exceptions.exceptions import TLSClientException
-import httpx
 
-owner = 'bogdanfinn'
+GITHUB_TOKEN = os.getenv("GH_TOKEN")
+
+owner = 'divvot'
 repo = 'tls-client'
 url = f'https://api.github.com/repos/{owner}/{repo}/releases/latest'
 root_directory = root_dir()
-GITHUB_TOKEN = os.getenv("GH_TOKEN")
-
 
 def auto_retry(retries: int):
     def decorator(func):
@@ -33,7 +34,6 @@ def auto_retry(retries: int):
         return wrapper
 
     return decorator
-
 
 @auto_retry(retries=3)
 async def get_latest_release() -> Tuple[str, list]:
@@ -63,7 +63,6 @@ async def get_latest_release() -> Tuple[str, list]:
     else:
         raise TLSClientException(f"Failed to fetch the latest release. Status code: {response.status_code}")
 
-
 async def download_and_save_asset(
         asset_url: str,
         asset_name: str,
@@ -90,14 +89,12 @@ async def download_and_save_asset(
         # Save version info
         await save_version_info(asset_name, version)
 
-
 async def save_version_info(asset_name: str, version: str):
     """
     Save version info to a hidden .version file in root_dir/dependencies
     """
     with open(f'{root_directory}/dependencies/.version', 'w') as f:
         f.write(f"{asset_name} {version}")
-
 
 def delete_version_info():
     """
@@ -110,7 +107,6 @@ def delete_version_info():
     except FileNotFoundError:
         pass
 
-
 def read_version_info():
     """
     Read version info from a hidden .version file in root_dir/dependencies
@@ -122,7 +118,6 @@ def read_version_info():
             return data[0], data[1]
     except FileNotFoundError:
         return None, None
-
 
 async def download_if_necessary():
     version_num, asset_url = await get_latest_release()
@@ -141,7 +136,6 @@ async def download_if_necessary():
     download_url = download_url[0]
     await download_and_save_asset(download_url, asset_name, version_num)
 
-
 async def update_if_necessary():
     current_asset, current_version = read_version_info()
     if not current_asset or not current_version:
@@ -154,7 +148,6 @@ async def update_if_necessary():
     if version_num != current_version:
         print(f">> Current version {current_version} is outdated, downloading the latest TLS release...")
         await download_if_necessary()
-
 
 if __name__ == "__main__":
     asyncio.run(update_if_necessary())
