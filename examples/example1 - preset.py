@@ -21,31 +21,13 @@ async def main():
 
     session = noble_tls.Session(
         client=Client.INSTAGRAM_IOS,
-        use_http3_after=True,
-        debug=True,
     )
 
     res = await session.get(
-        "https://i.instagram.com/actions",
+        "https://i.instagram.com/api/v1/direct_v2/get_presence/?suggested_followers_limit=100",
     )
+
     print("Status code:", res.status_code)
     print("Headers:", res.text)
-
-    for history in res.history:
-        print(f">> From URL: {history.url}")
-
-    print(f">> Current URL: {res.url}")
-
-    res = await session.get(
-        "https://i.instagram.com/actions",
-    )
-    print("Status code:", res.status_code)
-    print("Headers:", res.text)
-
-    for history in res.history:
-        print(f">> From URL: {history.url}")
-
-    print(f">> Current URL: {res.url}")
-
 
 asyncio.run(main())

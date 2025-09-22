@@ -36,7 +36,6 @@ class Session:
             random_tls_extension_order: Optional[bool] = False,
             force_http1: Optional[bool] = False,
             force_http3: Optional[bool] = False,
-            use_http3_after: Optional[bool] = False,
             catch_panics: Optional[bool] = False,
             debug: Optional[bool] = False,
             transportOptions: Optional[dict] = None,
@@ -260,7 +259,6 @@ class Session:
         # force HTTP1
         self.force_http1 = force_http1
         self.force_http3 = force_http3
-        self.use_http3_after = use_http3_after
 
         self.transportOptions = transportOptions
 
@@ -380,7 +378,6 @@ class Session:
                 "followRedirects": allow_redirects,
                 "forceHttp1": self.force_http1,
                 "forceHttp3": self.force_http3,
-                "useHttp3After": self.use_http3_after,
                 "withDebug": self.debug,
                 "catchPanics": self.catch_panics,
                 "headers": dict(headers),
